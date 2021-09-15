@@ -48,6 +48,10 @@
 				<input type="text" name="secret" title="Client Secret" class="form-control" placeholder="Client Secret">
 			</div>
 			<div class="form-group">
+				<label for="domains">Allowed Domains</label>
+				<input type="text" name="domains" title="Allowed Domains" class="form-control" placeholder="Allowed Domains">
+			</div>
+			<div class="form-group">
 				<label for="style">Login Button Style</label>
 				<select class="form-control" name="style" id="style" title="Login Button Style">
 					<option value="light">Light</option>

@@ -65,6 +65,9 @@
 			if (loadedSettings.secret) {
 				Google.settings.secret = loadedSettings.secret;
 			}
+			if (loadedSettings.domains){
+				Google.settings.domains = loadedSettings.domains.split(",");
+			}
 			Google.settings.autoconfirm = loadedSettings.autoconfirm === "on";
 			Google.settings.style = loadedSettings.style;
 			Google.settings.disableRegistration = loadedSettings.disableRegistration === "on";
@@ -89,6 +92,14 @@
 				userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",	// https://github.com/jaredhanson/passport-google-oauth2/pull/51/files#diff-04c6e90faac2675aa89e2176d2eec7d8R102
 				passReqToCallback: true
 			}, function (req, accessToken, refreshToken, profile, done) {
+				//Check if user email domain is restricted
+				if(Google.settings.domains){
+					//Verify user email is in valid domain
+					var domain = profile.emails[0].split('@')[1];
+					if(!domain in Google.settings.domains){
+						return done("Invalid domain.")
+					}
+				}
 				if (req.hasOwnProperty('user') && req.user.hasOwnProperty('uid') && req.user.uid > 0) {
 					// Save Google-specific information to the user
 					User.setUserField(req.user.uid, 'gplusid', profile.id);
